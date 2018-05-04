@@ -76,6 +76,8 @@ let propTypes = {
       y: PropTypes.number,
     }),
   ]),
+
+  onClickAdd: PropTypes.func,
 }
 
 class MonthView extends React.Component {
@@ -165,6 +167,7 @@ class MonthView extends React.Component {
       selected,
       date,
       longPressThreshold,
+      onClickAdd,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -203,6 +206,7 @@ class MonthView extends React.Component {
         eventWrapperComponent={components.eventWrapper}
         dateCellWrapperComponent={components.dateCellWrapper}
         longPressThreshold={longPressThreshold}
+        onClickAdd={onClickAdd}
       />
     )
   }

@@ -23,6 +23,9 @@ let propTypes = {
   eventWrapperComponent: elementType.isRequired,
   onSelect: PropTypes.func.isRequired,
   onDoubleClick: PropTypes.func.isRequired,
+
+  isAdd: PropTypes.bool,
+  onClickAdd: PropTypes.func,
 }
 
 class EventCell extends React.Component {
@@ -44,6 +47,8 @@ class EventCell extends React.Component {
       onDoubleClick,
       eventComponent: Event,
       eventWrapperComponent: EventWrapper,
+      isAdd,
+      onClickAdd,
       ...props
     } = this.props
 
@@ -85,13 +90,19 @@ class EventCell extends React.Component {
             'rbc-event-allday': showAsAllDay,
             'rbc-event-continues-prior': continuesPrior,
             'rbc-event-continues-after': continuesAfter,
+            'rbc-add-event': isAdd,
           })}
-          onClick={e => onSelect(event, e)}
+          onClick={e => (!isAdd ? onSelect(event, e) : onClickAdd(event))}
           onDoubleClick={e => onDoubleClick(event, e)}
         >
           <div className="rbc-event-content" title={tooltip || undefined}>
             {Event ? (
-              <Event event={event} title={title} isAllDay={allDay} />
+              <Event
+                event={event}
+                title={title}
+                isAllDay={allDay}
+                isAdd={isAdd}
+              />
             ) : (
               title
             )}

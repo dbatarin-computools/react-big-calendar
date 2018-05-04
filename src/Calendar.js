@@ -690,6 +690,7 @@ class Calendar extends React.Component {
     }),
 
     useKeymaster: PropTypes.bool,
+    onClickAdd: PropTypes.func,
   }
 
   static defaultProps = {
@@ -717,6 +718,7 @@ class Calendar extends React.Component {
     getNow: () => new Date(),
 
     useKeymaster: false,
+    onClickAdd: null,
   }
 
   getViews = () => {
@@ -769,6 +771,7 @@ class Calendar extends React.Component {
       getNow,
       length,
       useKeymaster,
+      onClickAdd,
       ...props
     } = this.props
 
@@ -805,10 +808,12 @@ class Calendar extends React.Component {
           <Keymaster
             keyName="left"
             onKeyDown={() => handleNavigate(navigate.PREVIOUS)}
+            key="left_key_previous"
           />,
           <Keymaster
             keyName="right"
             onKeyDown={() => handleNavigate(navigate.NEXT)}
+            key="right_key_next"
           />,
         ]}
         {toolbar && (
@@ -841,6 +846,7 @@ class Calendar extends React.Component {
           onDoubleClickEvent={this.handleDoubleClickEvent}
           onSelectSlot={this.handleSelectSlot}
           onShowMore={this._showMore}
+          onClickAdd={onClickAdd}
         />
       </div>
     )

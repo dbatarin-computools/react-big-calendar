@@ -34,7 +34,7 @@ export default {
     slots: 7,
   },
 
-  renderEvent(props, event) {
+  renderEvent(props, event, add = false) {
     let {
       eventPropGetter,
       selected,
@@ -50,6 +50,7 @@ export default {
       eventWrapperComponent,
       onSelect,
       onDoubleClick,
+      onClickAdd,
     } = props
 
     return (
@@ -69,6 +70,8 @@ export default {
         slotStart={start}
         slotEnd={end}
         eventComponent={eventComponent}
+        isAdd={add}
+        onClickAdd={onClickAdd}
       />
     )
   },

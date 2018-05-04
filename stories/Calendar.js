@@ -111,6 +111,7 @@ storiesOf('module.Calendar.week', module)
           events={demoEvents}
           onSelectEvent={action('event selected')}
           defaultDate={new Date(2015, 3, 1)}
+          onClickAdd={event => alert(JSON.stringify(event))}
         />
       </div>
     )

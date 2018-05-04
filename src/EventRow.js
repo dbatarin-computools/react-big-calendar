@@ -5,6 +5,7 @@ import EventRowMixin from './EventRowMixin'
 class EventRow extends React.Component {
   static propTypes = {
     segments: PropTypes.array,
+    onClickAdd: PropTypes.func,
     ...EventRowMixin.propTypes,
   }
   static defaultProps = {
@@ -17,20 +18,24 @@ class EventRow extends React.Component {
 
     return (
       <div className="rbc-row">
-        {segments.reduce((row, { event, left, right, span }, li) => {
-          let key = '_lvl_' + li
-          let gap = left - lastEnd
+        {segments.reduce(
+          (row, { event, left, right, span, add = false }, li) => {
+            let key = '_lvl_' + li
+            let gap = left - lastEnd
 
-          let content = EventRowMixin.renderEvent(this.props, event)
+            let content = EventRowMixin.renderEvent(this.props, event, add)
 
-          if (gap) row.push(EventRowMixin.renderSpan(slots, gap, `${key}_gap`))
+            if (gap)
+              row.push(EventRowMixin.renderSpan(slots, gap, `${key}_gap`))
 
-          row.push(EventRowMixin.renderSpan(slots, span, key, content))
+            row.push(EventRowMixin.renderSpan(slots, span, key, content))
 
-          lastEnd = right + 1
+            lastEnd = right + 1
 
-          return row
-        }, [])}
+            return row
+          },
+          []
+        )}
       </div>
     )
   }

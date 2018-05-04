@@ -43,11 +43,15 @@ const propTypes = {
   dateCellWrapperComponent: elementType,
   minRows: PropTypes.number.isRequired,
   maxRows: PropTypes.number.isRequired,
+
+  onClickAdd: PropTypes.func,
 }
 
 const defaultProps = {
   minRows: 0,
   maxRows: Infinity,
+
+  onClickAdd: null,
 }
 
 class DateContentRow extends React.Component {
@@ -149,6 +153,7 @@ class DateContentRow extends React.Component {
       onSelectStart,
       onSelectEnd,
       longPressThreshold,
+      onClickAdd,
       ...props
     } = this.props
 
@@ -171,6 +176,86 @@ class DateContentRow extends React.Component {
 
     let { levels, extra } = eventLevels(segments, Math.max(maxRows - 1, 1))
     while (levels.length < minRows) levels.push([])
+
+    if (onClickAdd) {
+      if (levels.length === 0) {
+        const singleLevel = []
+
+        range.forEach((rangeItem, index) => {
+          const addEvent = {
+            add: true,
+            event: { title: '+', start: rangeItem },
+            span: 1,
+            left: index + 1,
+            right: index + 1,
+          }
+          singleLevel.push(addEvent)
+        })
+
+        levels.push(singleLevel)
+      } else if (levels.length === 1) {
+        const firstLevel = []
+        const secondLevel = []
+
+        range.forEach((rangeItem, index) => {
+          const firstLevelIndex = levels[0].findIndex(
+            event => event.left === index + 1
+          )
+          const addEvent = {
+            add: true,
+            event: { title: '+', start: rangeItem },
+            span: 1,
+            left: index + 1,
+            right: index + 1,
+          }
+
+          if (firstLevelIndex === -1) {
+            firstLevel.push(addEvent)
+          } else {
+            firstLevel.push(levels[0][firstLevelIndex])
+            secondLevel.push(addEvent)
+          }
+        })
+
+        levels[0] = firstLevel
+        levels.push(secondLevel)
+      } else {
+        const firstLevel = []
+        const secondLevel = []
+
+        range.forEach((rangeItem, index) => {
+          const firstLevelIndex = levels[0].findIndex(
+            event => event.left === index + 1
+          )
+          const addEvent = {
+            add: true,
+            event: { title: '+', start: rangeItem },
+            span: 1,
+            left: index + 1,
+            right: index + 1,
+          }
+
+          if (firstLevelIndex === -1) {
+            firstLevel.push(addEvent)
+          } else {
+            firstLevel.push(levels[0][firstLevelIndex])
+
+            const secondLevelIndex = levels[1].findIndex(
+              event => event.left === index + 1
+            )
+
+            if (secondLevelIndex === -1) {
+              secondLevel.push(addEvent)
+            } else {
+              secondLevel.push(levels[1][secondLevelIndex])
+            }
+          }
+        })
+
+        levels[0] = firstLevel
+        levels[1] = secondLevel
+      }
+    }
 
     return (
       <div className={className}>
@@ -207,6 +292,7 @@ class DateContentRow extends React.Component {
               eventWrapperComponent={eventWrapperComponent}
               startAccessor={startAccessor}
               endAccessor={endAccessor}
+              onClickAdd={onClickAdd}
             />
           ))}
           {!!extra.length && (
