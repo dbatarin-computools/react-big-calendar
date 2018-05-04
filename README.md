@@ -8,9 +8,9 @@ Inspired by [Full Calendar](http://fullcalendar.io/).
 
 ## Use and Setup
 
-`npm install react-big-calendar --save`
+`npm install react-big-calendar-dbc --save`
 
-Include `react-big-calendar/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
+Include `react-big-calendar-dbc/lib/css/react-big-calendar.css` for styles, and make sure your calendar's container
 element has a height, or the calendar won't be visible.
 
 ## Starters
